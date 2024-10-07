@@ -1,3 +1,7 @@
+export type Pepe = {
+  url: string;
+  path: string;
+};
 export const getPepes = async () => {
   const options = {
     method: "GET",
@@ -14,10 +18,7 @@ export const getPepes = async () => {
     );
 
     const json = await response.json();
-    return json?.tree.filter((el) => el?.type === "blob") as {
-      url: string;
-      path: string;
-    }[];
+    return json?.tree.filter((el) => el?.type === "blob") as Pepe[];
   } catch (err) {
     console.error(err);
   }
