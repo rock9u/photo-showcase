@@ -4,7 +4,7 @@ import "photoswipe/dist/photoswipe.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import { Pepe } from "~/server/api/apis/github";
 
-export function PepeShowcase({ pepes }: { pepes: Pepe[] }) {
+export function PepeShowcase({ pepes }: { pepes?: Pepe[] }) {
   return (
     <div className="w-full max-w-xs">
       {pepes ? (
