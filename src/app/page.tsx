@@ -1,11 +1,13 @@
 import Link from "next/link";
 
 import { CreatePost } from "~/app/_components/create-post";
+import { PepeShowcase } from "~/app/_components/photoShowcase";
 import { PostDetail } from "~/app/_components/postDetail";
 import { api } from "~/trpc/server";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
+  const pepes = await api.pepe.all();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -44,7 +46,7 @@ export default async function Home() {
         </div>
 
         <CrudShowcase />
-        <PepeShowcase />
+        <PepeShowcase pepes={pepes}/>
       </div>
     </main>
   );
@@ -62,24 +64,6 @@ async function CrudShowcase() {
       )}
 
       <CreatePost />
-    </div>
-  );
-}
-
-async function PepeShowcase() {
-  const pepes = await api.pepe.all();
-
-  return (
-    <div className="w-full max-w-xs">
-      {pepes
-        ? pepes.map(({ path }) => (
-            <img
-              src={`http://rock9u.github.io/pepe-image/${path}`}
-              alt={path}
-              key={path}
-            />
-          ))
-        : "Loading Pepes..."}
     </div>
   );
 }
