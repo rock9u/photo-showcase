@@ -1,5 +1,12 @@
-import { PepeShowcase } from "~/app/_components/PepeShowcase";
 import { api } from "~/trpc/server";
+
+import dynamic from "next/dynamic";
+
+const PepeShowcase = dynamic(
+  () =>
+    import("~/app/_components/PepeShowcase").then((mod) => mod.PepeShowcase),
+  { ssr: false },
+);
 
 export default async function Home() {
   const pepes = await api.pepe.all();
