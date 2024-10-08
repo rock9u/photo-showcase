@@ -78,7 +78,7 @@ jobs:
       - name: 'Create env file'
         run: |
           touch .env
-          echo GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} >> .env
+          echo GITHUB_TOKEN=${{ secrets.AUTH_GITHUB_TOKEN }} >> .env
           cat .env
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} run build
