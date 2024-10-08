@@ -5,6 +5,17 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "rock9u.github.io",
+        port: "",
+        pathname: "/**/*",
+      },
+    ],
+  },
+};
 
 export default config;
