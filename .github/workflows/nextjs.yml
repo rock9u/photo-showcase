@@ -49,7 +49,7 @@ jobs:
             exit 1
           fi
       - name: Install PNPM
-+       run: npm i -g pnpm
+        run: npm i -g pnpm
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -75,7 +75,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      - name: 'Create env file'
+      - name: "Create env file"
         run: |
           touch .env
           echo GITHUB_TOKEN=${{ secrets.AUTH_GITHUB_TOKEN }} >> .env
