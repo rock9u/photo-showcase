@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MyBarChart } from "~/components/ui/BarChart";
 
 import { api } from "~/trpc/react";
 
