@@ -85,6 +85,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.19
     version: 18.3.0
+  '@types/react-image-gallery':
+    specifier: ^1.2.4
+    version: 1.2.4
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.1.1
     version: 7.14.1(@typescript-eslint/parser@7.14.1)(eslint@8.57.0)(typescript@5.5.2)
@@ -518,6 +521,12 @@ packages:
 
   /@types/react-dom@18.3.0:
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+    dependencies:
+      '@types/react': 18.3.3
+    dev: true
+
+  /@types/react-image-gallery@1.2.4:
+    resolution: {integrity: sha512-H0xpmT5rlSH0qiTvcUDCPDLRBi3J3Xa4COqaDqGb7ffLFpQoPAxpZdNuKCuThhFI0xJmNnMubZiD6B3kCBHtcw==}
     dependencies:
       '@types/react': 18.3.3
     dev: true

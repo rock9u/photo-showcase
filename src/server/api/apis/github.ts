@@ -17,8 +17,10 @@ export const getPepes = async () => {
       options,
     );
 
+    // eslint-disable-next-line
     const json = await response.json();
-    return json?.tree.filter((el) => el?.type === "blob") as Pepe[];
+    // eslint-disable-next-line
+    return json?.tree.filter((el: any) => el?.type === "blob") as Pepe[];
   } catch (err) {
     console.error(err);
   }

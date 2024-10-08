@@ -1,8 +1,4 @@
-import Link from "next/link";
-
-import { CreatePost } from "~/app/_components/create-post";
 import { PepeShowcase } from "~/app/_components/PepeShowcase";
-import { PostDetail } from "~/app/_components/postDetail";
 import { api } from "~/trpc/server";
 
 export default async function Home() {
@@ -14,21 +10,5 @@ export default async function Home() {
       <PepeShowcase pepes={pepes} />
       <div className="container flex flex-row flex-wrap items-center justify-center gap-12 px-4 py-16"></div>
     </main>
-  );
-}
-
-async function CrudShowcase() {
-  const latestPost = await api.post.getLatest();
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <PostDetail post={latestPost} />
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
-    </div>
   );
 }
