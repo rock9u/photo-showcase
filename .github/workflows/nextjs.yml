@@ -75,8 +75,13 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} >> .env
+          cat .env
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: ${{ steps.detect-package-manager.outputs.runner }} run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
