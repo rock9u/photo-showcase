@@ -2,6 +2,7 @@
 import ReactImageGallery from "react-image-gallery";
 import { STREET_REPO_NAME, type Photo } from "~/server/api/apis/github";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { redirect, useRouter } from "next/navigation";
 
 function pickRandom(array: Photo[], quantity = 10) {
   const result: Photo[] = [];
@@ -29,5 +30,27 @@ export function PhotoShowcase({
   }));
   return (
     <>{photos ? <ReactImageGallery items={images} /> : <p>Loading...</p>}</>
+  );
+}
+
+export function PhotoPagination({
+  limit,
+  offset,
+}: {
+  limit: number;
+  offset: number;
+}) {
+  const router = useRouter();
+  const onNext = () =>
+    router.push(`/photos?limit=${limit}&offset=${offset + limit}`);
+  const onPrev = () =>
+    router.push(`/photos?limit=${limit}&offset=${offset - limit}`);
+
+  return (
+    <nav className="flex flex-row items-center justify-around gap-2">
+      <button onClick={onPrev} disabled={offset <= 0}>{`Last ${limit}`}</button>
+      <small>{`From ${offset + 1} to ${offset + limit}`}</small>
+      <button onClick={onNext}>{`Next ${limit}`}</button>
+    </nav>
   );
 }

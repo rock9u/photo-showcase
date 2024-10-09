@@ -14,12 +14,11 @@ export const streetRouter = createTRPCRouter({
   all: publicProcedure
     .input(
       z.object({
-        //** pagination */
         limit: z.number().optional(),
         offset: z.number().optional(),
       }),
     )
-    .query(async () => {
-      return await getStreets();
+    .query(async ({ input }) => {
+      return await getStreets(input);
     }),
 });
