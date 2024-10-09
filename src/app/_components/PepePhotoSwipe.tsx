@@ -4,11 +4,11 @@ import "photoswipe/dist/photoswipe.css";
 
 import "react-image-gallery/styles/css/image-gallery.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
-import { Pepe } from "~/server/api/apis/github";
+import { Photo } from "~/server/api/apis/github";
 
 const PEPE_REPO_URL = "https://rock9u.github.io/pepe-image";
 
-export function PepePhotoSwipe({ pepes }: { pepes?: Pepe[] }) {
+export function PepePhotoSwipe({ pepes }: { pepes?: Photo[] }) {
   return (
     <>
       {pepes ? (

@@ -1,4 +1,4 @@
-export type Pepe = {
+export type Photo = {
   url: string;
   path: string;
 };
@@ -20,7 +20,7 @@ export const getPepes = async () => {
     // eslint-disable-next-line
     const json = await response.json();
     // eslint-disable-next-line
-    return json?.tree.filter((el: any) => el?.type === "blob") as Pepe[];
+    return json?.tree.filter((el: any) => el?.type === "blob") as Photo[];
   } catch (err) {
     console.error(err);
   }

@@ -1,7 +1,4 @@
-import "photoswipe/dist/photoswipe.css";
-
-import "react-image-gallery/styles/css/image-gallery.css";
-import { PhotoShowcase } from "~/app/_components/photoShowcase";
+import { PhotoShowcase } from "~/app/_components/PhotoShowcase";
 import { api } from "~/trpc/server";
 
 export async function PepeShowcase() {
