@@ -2,6 +2,8 @@ export type Photo = {
   url: string;
   path: string;
 };
+
+export const PEPE_REPO_NAME = "pepe-image";
 export const getPepes = async () => {
   const options = {
     method: "GET",
@@ -12,7 +14,7 @@ export const getPepes = async () => {
 
   try {
     const response = await fetch(
-      "http://api.github.com/repos/rock9u/pepe-image/git/trees/master?recursive=1",
+      `http://api.github.com/repos/rock9u/${PEPE_REPO_NAME}/git/trees/master?recursive=1`,
       options,
     );
 
