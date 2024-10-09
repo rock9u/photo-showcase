@@ -1,5 +1,6 @@
 import { pepeRouter } from "~/server/api/routers/pepe";
 import { postRouter } from "~/server/api/routers/post";
+import { streetRouter } from "~/server/api/routers/street";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -10,6 +11,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 export const appRouter = createTRPCRouter({
   post: postRouter,
   pepe: pepeRouter,
+  street: streetRouter,
 });
 
 // export type definition of API
