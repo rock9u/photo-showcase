@@ -28,7 +28,18 @@ export const getPepes = async () => {
 };
 
 export const STREET_REPO_NAME = "photo-storage";
-export const getStreets = async () => {
+export const getStreets = async (
+  {
+    limit,
+    offset,
+  }: {
+    limit?: number;
+    offset?: number;
+  } = {
+    limit: 10,
+    offset: 0,
+  },
+) => {
   const options = {
     method: "GET",
     headers: {
@@ -45,7 +56,19 @@ export const getStreets = async () => {
     // eslint-disable-next-line
     const json = await response.json();
     // eslint-disable-next-line
-    return json?.tree.filter((el: any) => el?.type === "blob") as Photo[];
+    const photos: Photo[] = [
+      // eslint-disable-next-line
+      ...(json?.tree.filter((el: any) => el?.type === "blob") ?? []),
+    ].sort((a: Photo, b: Photo) => {
+      return b.path.localeCompare(a.path);
+    });
+    const paginated = photos.filter((el: Photo, index: number) => {
+      if (limit !== undefined && offset !== undefined) {
+        return index >= offset && index < offset + limit;
+      }
+      return true;
+    });
+    return paginated;
   } catch (err) {
     console.error(err);
   }

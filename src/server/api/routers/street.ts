@@ -11,7 +11,15 @@ export const streetRouter = createTRPCRouter({
       };
     }),
 
-  all: publicProcedure.query(async () => {
-    return await getStreets();
-  }),
+  all: publicProcedure
+    .input(
+      z.object({
+        //** pagination */
+        limit: z.number().optional(),
+        offset: z.number().optional(),
+      }),
+    )
+    .query(async () => {
+      return await getStreets();
+    }),
 });

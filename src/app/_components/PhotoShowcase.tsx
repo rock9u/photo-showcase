@@ -23,7 +23,7 @@ export function PhotoShowcase({
   repoName: string;
 }) {
   const url = "https://rock9u.github.io/" + repoName;
-  const images = pickRandom(photos ?? [])?.map((el) => ({
+  const images = (photos ?? [])?.map((el) => ({
     original: `${url}/${el.path}`,
     thumbnail: `${url}/${el.path}`,
   }));
