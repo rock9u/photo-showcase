@@ -15,9 +15,12 @@ export async function StreetShowcase({
   const streets = await api.street.all({ limit, offset });
 
   return (
-    <>
+    <section
+      role="presentation"
+      className="flex w-full flex-col items-center justify-center"
+    >
       <PhotoPagination limit={limit} offset={offset} />
-      <PhotoShowcase photos={streets} repoName={STREET_REPO_NAME} />;
-    </>
+      <PhotoShowcase photos={streets} repoName={STREET_REPO_NAME} />
+    </section>
   );
 }

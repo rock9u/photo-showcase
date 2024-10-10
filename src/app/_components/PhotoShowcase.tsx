@@ -29,7 +29,16 @@ export function PhotoShowcase({
     thumbnail: `${url}/${el.path}`,
   }));
   return (
-    <>{photos ? <ReactImageGallery items={images} /> : <p>Loading...</p>}</>
+    <div
+      role="figure"
+      className="flex max-w-screen-lg flex-col items-center justify-center overflow-auto"
+    >
+      {photos ? (
+        <ReactImageGallery items={images} showIndex thumbnailPosition="left" />
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 }
 
