@@ -1,5 +1,10 @@
 import { StreetShowcase } from "~/app/_components/StreetShowcase";
 
+export const metadata = {
+  title: "Street Gallery",
+  description: "Streets",
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
+};
 export default async function PhotoPage({
   params,
   searchParams,
