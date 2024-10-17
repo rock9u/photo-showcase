@@ -19,9 +19,8 @@ export function PhotoMasonry({
   const url = "https://rock9u.github.io/" + repoName;
   const imageUrls = (photos ?? [])?.map((el) => `${url}/${el.path}`);
 
-  const container = useRef();
   useGSAP(() => {
-    gsap.from(`img[role="img"]`, {
+    gsap.timeline().from(`img[role="img"]`, {
       duration: 2,
       delay: 0.5,
       stagger: 0.1,
@@ -33,7 +32,7 @@ export function PhotoMasonry({
 
   return (
     <section
-      className="grid-cols grid w-full gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 "
+      className="grid-cols grid w-full gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       style={{
         gridTemplateRows: "masonry",
       }}
@@ -50,6 +49,14 @@ export function PhotoMasonry({
           role="img"
           aria-label="Street Photo"
           className="h-auto w-full"
+          priority={index < 5}
+          onLoad={(e) => {
+            //set height of image in css
+            const img = e.target as HTMLImageElement;
+            const spanRatio = img.height / img.width;
+            img.setAttribute("spanRatio", spanRatio.toString());
+            img.style.gridRow = `auto / span ${spanRatio * 2}`;
+          }}
         />
       ))}
     </section>
