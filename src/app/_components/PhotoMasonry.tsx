@@ -48,14 +48,18 @@ export function PhotoMasonry({
           sizes="100vw"
           role="img"
           aria-label="Street Photo"
-          className="h-auto w-full"
+          className="row-start-auto h-auto w-full"
           priority={index < 5}
           onLoad={(e) => {
-            //set height of image in css
             const img = e.target as HTMLImageElement;
             const spanRatio = img.height / img.width;
-            img.setAttribute("spanRatio", spanRatio.toString());
-            img.style.gridRow = `auto / span ${spanRatio * 2}`;
+            img.setAttribute("span-ratio", spanRatio.toString());
+            if (spanRatio < 0.7) {
+              img.style.gridRowEnd = `span 1`;
+            }
+            if (spanRatio > 0.7) {
+              img.style.gridRowEnd = `span 2`;
+            }
           }}
         />
       ))}
