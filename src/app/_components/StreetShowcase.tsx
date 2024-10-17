@@ -1,8 +1,6 @@
 import { PhotoMasonry } from "~/app/_components/PhotoMasonry";
-import {
-  PhotoPagination,
-  PhotoShowcase,
-} from "~/app/_components/PhotoShowcase";
+import { PhotoShowcase } from "~/app/_components/PhotoShowcase";
+import { PhotoPagination } from "./PhotoPagination";
 import { STREET_REPO_NAME } from "~/server/api/apis/github";
 import { api } from "~/trpc/server";
 
@@ -22,7 +20,7 @@ export async function StreetShowcase({
       role="presentation"
       className="flex w-full flex-col items-center justify-center"
     >
-      <PhotoPagination limit={limit} offset={offset} />
+      <PhotoPagination limit={limit} offset={offset} masonry={masonry} />
       {masonry ? (
         <PhotoMasonry photos={streets} repoName={STREET_REPO_NAME} />
       ) : (
