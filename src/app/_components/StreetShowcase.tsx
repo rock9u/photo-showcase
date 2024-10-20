@@ -26,6 +26,7 @@ export async function StreetShowcase({
       ) : (
         <PhotoShowcase photos={streets} repoName={STREET_REPO_NAME} />
       )}
+      <PhotoPagination limit={limit} offset={offset} masonry={masonry} />
     </section>
   );
 }
