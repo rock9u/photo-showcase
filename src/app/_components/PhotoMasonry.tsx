@@ -1,8 +1,10 @@
 "use client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { cn } from "~/lib/utils";
 import { Photo } from "~/server/api/apis/github";
 
 export type PhotoMasonryProps = {
@@ -18,17 +20,44 @@ export function PhotoMasonry({
 }: PhotoMasonryProps): JSX.Element {
   const url = "https://rock9u.github.io/" + repoName;
   const imageUrls = (photos ?? [])?.map((el) => `${url}/${el.path}`);
+  // const [progress, setProgress] = React.useState(0);
 
-  useGSAP(() => {
-    gsap.timeline().from(`img[role="img"]`, {
-      duration: 2,
-      delay: 0.5,
-      stagger: 0.1,
-      opacity: 0,
-      y: -300,
-      ease: "elastic.out(1,0.67)",
-    });
-  });
+  useGSAP(
+    () => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const proxy: {
+          skew: number;
+        } = { skew: 0 },
+        skewSetter = gsap.quickSetter("img", "skewY", "deg"),
+        clamp = gsap.utils.clamp(-20, 20);
+      const tl = gsap.timeline().from(`img[role="img"]`, {
+        duration: 2,
+        delay: 0.5,
+        stagger: 0.1,
+        opacity: 0,
+        y: -300,
+        ease: "elastic.out(1,0.67)",
+      });
+
+      ScrollTrigger.create({
+        onUpdate: (self) => {
+          const skew = clamp(self.getVelocity() / 300);
+          if (Math.abs(skew) > Math.abs(proxy.skew)) {
+            proxy.skew = skew;
+            gsap.to(proxy, {
+              skew: 0,
+              duration: 0.5,
+              ease: "power4.easeInOut",
+              overwrite: true,
+              onUpdate: () => skewSetter(proxy.skew) as void,
+            });
+          }
+        },
+      });
+    },
+    { dependencies: [photos] },
+  );
 
   return (
     <section
@@ -48,7 +77,7 @@ export function PhotoMasonry({
           sizes="100vw"
           role="img"
           aria-label="Street Photo"
-          className="row-start-auto h-auto w-full"
+          className={cn("row-start-auto h-auto w-full")}
           priority={index < 5}
           onLoad={(e) => {
             const img = e.target as HTMLImageElement;
