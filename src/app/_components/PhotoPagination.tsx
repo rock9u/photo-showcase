@@ -1,13 +1,21 @@
-import Link from "next/link";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "~/components/ui/pagination";
 
 export function PhotoPagination({
   limit,
   offset,
   masonry,
+  hideSummary,
 }: {
   limit: number;
   offset: number;
   masonry?: boolean;
+  hideSummary?: boolean;
 }) {
   const nextNewOffset = offset + limit;
   const nextLink =
@@ -19,15 +27,29 @@ export function PhotoPagination({
     (masonry ? "&masonry" : "");
 
   return (
-    <nav className="flex flex-row items-center justify-around gap-2">
-      <Link
-        href={prevLink}
-        aria-disabled={offset <= 0}
-        className={offset <= 0 ? "pointer-events-none" : ""}
-        tabIndex={offset <= 0 ? -1 : undefined}
-      >{`Last ${limit}`}</Link>
-      <small>{`From ${offset + 1} to ${offset + limit}`}</small>
-      <Link href={nextLink}>{`Next ${limit}`}</Link>
-    </nav>
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href={prevLink}
+            aria-disabled={offset <= 0}
+            tabIndex={offset <= 0 ? -1 : undefined}
+            className={offset <= 0 ? "pointer-events-none" : ""}
+          >
+            {`Last ${limit}`}
+          </PaginationPrevious>
+        </PaginationItem>
+        {hideSummary ? (
+          <></>
+        ) : (
+          <PaginationItem className="px-2">
+            {`From ${offset + 1} to ${offset + limit}`}
+          </PaginationItem>
+        )}
+        <PaginationItem>
+          <PaginationNext href={nextLink}>{`Next ${limit}`}</PaginationNext>
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }

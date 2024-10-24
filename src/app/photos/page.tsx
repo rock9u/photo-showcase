@@ -1,3 +1,4 @@
+import { StreetBreadcrumbs } from "~/app/_components/Breadcrumb";
 import { StreetShowcase } from "~/app/_components/StreetShowcase";
 
 export const metadata = {
@@ -16,10 +17,9 @@ export default async function PhotoPage({
   const offset = parseInt(searchParams.offset as string) || 0;
   const isMasonry = searchParams.hasOwnProperty("masonry");
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-[#6534a9] to-[#15162c] text-white">
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center bg-gradient-to-b from-[#6534a9] to-[#15162c] p-4 text-white">
       <h1>Street Photos</h1>
       <StreetShowcase limit={limit} offset={offset} masonry={isMasonry} />
-      <div className="container flex flex-row flex-wrap items-center justify-center gap-12 px-4 py-16"></div>
     </main>
   );
 }

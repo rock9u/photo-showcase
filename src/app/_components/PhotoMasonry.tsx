@@ -20,7 +20,6 @@ export function PhotoMasonry({
 }: PhotoMasonryProps): JSX.Element {
   const url = "https://rock9u.github.io/" + repoName;
   const imageUrls = (photos ?? [])?.map((el) => `${url}/${el.path}`);
-  // const [progress, setProgress] = React.useState(0);
 
   useGSAP(
     () => {
@@ -56,7 +55,7 @@ export function PhotoMasonry({
         },
       });
     },
-    { dependencies: [photos] },
+    { dependencies: [imageUrls] },
   );
 
   return (
