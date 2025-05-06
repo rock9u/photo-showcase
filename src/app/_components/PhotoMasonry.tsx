@@ -1,9 +1,7 @@
 "use client";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "gsap";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { Photo } from "~/server/api/apis/github";
 
@@ -20,46 +18,79 @@ export function PhotoMasonry({
 }: PhotoMasonryProps): JSX.Element {
   const url = "https://rock9u.github.io/" + repoName;
   const imageUrls = (photos ?? [])?.map((el) => `${url}/${el.path}`);
-
-  useGSAP(
-    () => {
-      gsap.registerPlugin(ScrollTrigger);
-
-      const proxy: {
-          skew: number;
-        } = { skew: 0 },
-        skewSetter = gsap.quickSetter("img", "skewY", "deg"),
-        clamp = gsap.utils.clamp(-20, 20);
-      const tl = gsap.timeline().from(`img[role="img"]`, {
-        duration: 2,
-        delay: 0.5,
-        stagger: 0.1,
-        opacity: 0,
-        y: -300,
-        ease: "elastic.out(1,0.67)",
-      });
-
-      ScrollTrigger.create({
-        onUpdate: (self) => {
-          const skew = clamp(self.getVelocity() / 300);
-          if (Math.abs(skew) > Math.abs(proxy.skew)) {
-            proxy.skew = skew;
-            gsap.to(proxy, {
-              skew: 0,
-              duration: 0.5,
-              ease: "power4.easeInOut",
-              overwrite: true,
-              onUpdate: () => skewSetter(proxy.skew) as void,
-            });
-          }
-        },
-      });
-    },
-    { dependencies: [imageUrls] },
+  const [selected, setSelected] = useState<number | undefined>(undefined);
+  const [key, refreshKey] = useReducer<React.Reducer<number, void>>(
+    (state) => state + 1,
+    0,
   );
+  const imgsRef = useRef<HTMLImageElement[]>([]);
+  useEffect(() => {
+    imgsRef.current = [];
+    refreshKey();
+  }, []);
+
+  const addToRefs = (el: HTMLImageElement) => {
+    if (el && !imgsRef.current.includes(el)) {
+      imgsRef.current.push(el);
+    }
+  };
+
+  useEffect(() => {
+    imgsRef.current.forEach((obj) => {
+      focusSelected(obj);
+    });
+    function focusSelected(obj: HTMLImageElement) {
+      const attrIndex = obj.getAttribute("attr-index");
+      const index =
+        attrIndex !== null && attrIndex !== undefined
+          ? parseInt(attrIndex)
+          : undefined;
+      const timeline = gsap.timeline();
+      const rect = obj.getBoundingClientRect();
+      const fullScreenScale = Math.min(
+        window.innerHeight / rect.height,
+        window.innerWidth / rect.width,
+      );
+      if (index === selected) {
+        timeline.fromTo(
+          obj,
+          {
+            scale: 1,
+            zIndex: 0,
+          },
+          {
+            scale: fullScreenScale,
+            duration: 0.2,
+            x: window.innerWidth / 2 - rect.x - rect.width / 2,
+            y: window.innerHeight / 2 - rect.y - rect.height / 2,
+            ease: "power4.easeInOut",
+            zIndex: 10,
+          },
+        );
+      } else {
+        timeline.fromTo(
+          obj,
+          {
+            zIndex: 0,
+          },
+          {
+            x: 0,
+            y: 0,
+            scale: 1,
+            zIndex: 0,
+            opacity: 1,
+            duration: 0.2,
+            ease: "power4.easeInOut",
+          },
+        );
+      }
+      timeline.play();
+    }
+  }, [selected]);
 
   return (
     <section
+      key={key}
       className="grid-cols grid w-full gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       style={{
         gridTemplateRows: "masonry",
@@ -68,6 +99,7 @@ export function PhotoMasonry({
       {children}
       {imageUrls.map((src, index) => (
         <Image
+          ref={addToRefs}
           key={src}
           src={src}
           alt={`Street Photo from ${repoName}, index ${index}`}
@@ -76,6 +108,13 @@ export function PhotoMasonry({
           sizes="100vw"
           role="img"
           aria-label="Street Photo"
+          attr-index={index}
+          onClick={(e) => {
+            setSelected(index);
+          }}
+          onDoubleClick={(e) => {
+            setSelected(undefined);
+          }}
           className={cn("row-start-auto h-auto w-full")}
           priority={index < 5}
           onLoad={(e) => {
